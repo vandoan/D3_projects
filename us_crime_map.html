@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<! duspviz tutorial >
+<html lang="en">
+<head>
+	<title>Mapping with D3</title>
+	<script src="js/d3.v4.min.js" charset="utf-8"></script>
+	<script src="js/topojson.v2.min.js" charset="utf-8"></script>
+
+	<style>
+	.states { 		  fill: rgba(0,0,0,.11);
+ }
+		 .states :hover {
+		  fill: red;
+		}
+
+
+		.state-borders {
+		  fill: none;
+		  stroke: #fff;
+		  stroke-width: 0.5px;
+		  stroke-linejoin: round;
+		  stroke-linecap: round;
+		  pointer-events: none;
+		}
+	</style>
+
+</head>
+<body>
+<svg width="960" height="600"></svg>
+
+	 
+
+<script>  
+var statesIdMap = {
+	"al":"01","ak":"02","ar":"03","az":"04","la":"05","ca":"06","ar":"07","ut":"08","ct":"09","de":"10","de":"11","fl":"12","ga":"13","il":"14","hi":"15","id":"16","il":"17","in":"18","ia":"19","ks":"20","ky":"21","la":"22","me":"23","md":"24","ma":"25","mi":"26","wi":"27","ms":"28","mo":"29","mt":"30","ne":"31","nv":"32","nh":"33","nj":"34","nm":"35","ny":"36","nc":"37","nd":"38","oh":"39","ok":"40","or":"41","pa":"42","tx":"43","ri":"44","sc":"45","sd":"46","tn":"47","tx":"48","ut":"49","vt":"50","va":"51","wa":"53","wv":"54"};
+
+
+
+
+var svg = d3.select("svg");
+var path = d3.geoPath();
+
+d3.json("data/us-10m.v1.json", function(error, us) {
+  if (error) throw error;
+
+  svg.append("g")
+  	.attr("class", "states")
+    .selectAll("path")
+    .data(topojson.feature(us, us.objects.states).features)
+    .enter()
+    .append("path")
+    .attr("class", function(d) {
+    	var name = d.id;
+    	return "state-" + name; 
+    })
+    .each(function(d) {
+                   console.log(d)
+                })
+    .attr("d", path);
+    console.log(us.objects.states.geometries);
+
+  svg.append("path")
+      .attr("class", "state-borders")
+      .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+});
+
+
+
+	var crimePerCapita 		= 0;
+	var statesCrime 		= [];
+	var statesCrimeHigh 	= [];
+	var crimeMax 	 		= [];
+	var stateRelativeCrime	= [];
+
+
+d3.json("data/stateCrime/usCrime.json", function(error, states) {
+	if (error) throw error;
+	for( y = 1980; y <= 2014; y++){	// INITIATE VARS FOR EACH YEAR
+		statesCrimeHigh[y] = [];	  									// set vars here because of scope
+		stateRelativeCrime[y] = [];									// used to get opacity
+	}
+
+	for( i = 0; i < states.length; i++ ) { // CRIME PER CAPITA BY STATE
+		var stateName = states[i].state;
+	 	statesCrime[i] = {};											// create an object in the array
+		statesCrime[i]['state'] = stateName; 							// add its state name
+
+	 	for( x = 0, j = 1980; j <= 2014; x++, j++){						// go through time span
+  			crimePerCapita = states[i].data[x]["Violent crime total"] / states[i].data[x]["Population"];	// get per capita crime rate
+  			crimePerCapita = crimePerCapita.toFixed(5);  				// limit the data length
+	  		statesCrime[i][j] = crimePerCapita;							// add average and year to state array
+		  	statesCrimeHigh[j][stateName] = crimePerCapita;			// add state and average to year array	
+	 	}
+	}
+
+
+	for( y = 1980; y <= 2014; y++ ){	// ANNUAL NATIONAL HIGH CRIME PER CAPITA
+		var annualCrimeArray = Object.values(statesCrimeHigh[y]);		// get the percentages of each state
+		var yearMaxCrimeUpdate = [];									// initiate the var
+		for(x = 0; x < annualCrimeArray.length; x++ ){					// go through the numbers of the year
+			yearMaxCrimeUpdate.push(parseFloat(annualCrimeArray[x]));	// and turn them into floats
+ 		}
+		crimeMax[y] = Math.max.apply(null,yearMaxCrimeUpdate);	// with the floats, get the max
+	}
+ 	
+	for( y = 1980; y <= 2014; y++){	//  RELATIVE CRIME RATE BY STATE
+		currentKeys 	= Object.keys(statesCrimeHigh[y]);
+		currentValues 	= Object.values(statesCrimeHigh[y]);
+
+		for( i = 0; i < states.length; i++ ) { 	// stateRelativeCrime 
+			stateRelativeCrime[y][currentKeys[i]] = parseFloat(currentValues[i])/crimeMax[y];
+		}
+ 	}
+
+});
+
+
+
+</script>
+
+
+</body>
+</html>

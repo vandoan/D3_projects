@@ -1,0 +1,323 @@
+{
+                                                                                
+"type": "state",
+"state": "al",
+"data": 
+  [
+    {
+      "Year": 1980,
+      "Population": 3861466,
+      "Violent crime total": 17320,
+      "Murder and nonnegligent Manslaughter": 509,
+      "Legacy rape": 1158,
+      "Robbery": 5102,
+      "Aggravated assault": 10551
+    },
+    {
+      "Year": 1981,
+      "Population": 3916000,
+      "Violent crime total": 18423,
+      "Murder and nonnegligent Manslaughter": 465,
+      "Legacy rape": 1021,
+      "Robbery": 4952,
+      "Aggravated assault": 11985
+    },
+    {
+      "Year": 1982,
+      "Population": 3943000,
+      "Violent crime total": 17653,
+      "Murder and nonnegligent Manslaughter": 417,
+      "Legacy rape": 1026,
+      "Robbery": 4417,
+      "Aggravated assault": 11793
+    },
+    {
+      "Year": 1983,
+      "Population": 3959000,
+      "Violent crime total": 16471,
+      "Murder and nonnegligent Manslaughter": 364,
+      "Legacy rape": 931,
+      "Robbery": 3895,
+      "Aggravated assault": 11281
+    },
+    {
+      "Year": 1984,
+      "Population": 3990000,
+      "Violent crime total": 17204,
+      "Murder and nonnegligent Manslaughter": 374,
+      "Legacy rape": 1002,
+      "Robbery": 3833,
+      "Aggravated assault": 11995
+    },
+    {
+      "Year": 1985,
+      "Population": 4021000,
+      "Violent crime total": 18398,
+      "Murder and nonnegligent Manslaughter": 396,
+      "Legacy rape": 1079,
+      "Robbery": 4237,
+      "Aggravated assault": 12686
+    },
+    {
+      "Year": 1986,
+      "Population": 4053000,
+      "Violent crime total": 22616,
+      "Murder and nonnegligent Manslaughter": 409,
+      "Legacy rape": 1150,
+      "Robbery": 4523,
+      "Aggravated assault": 16534
+    },
+    {
+      "Year": 1987,
+      "Population": 4083000,
+      "Violent crime total": 22833,
+      "Murder and nonnegligent Manslaughter": 380,
+      "Legacy rape": 1137,
+      "Robbery": 4581,
+      "Aggravated assault": 16735
+    },
+    {
+      "Year": 1988,
+      "Population": 4127000,
+      "Violent crime total": 23052,
+      "Murder and nonnegligent Manslaughter": 408,
+      "Legacy rape": 1228,
+      "Robbery": 4860,
+      "Aggravated assault": 16556
+    },
+    {
+      "Year": 1989,
+      "Population": 4118000,
+      "Violent crime total": 24329,
+      "Murder and nonnegligent Manslaughter": 421,
+      "Legacy rape": 1276,
+      "Robbery": 5515,
+      "Aggravated assault": 17117
+    },
+    {
+      "Year": 1990,
+      "Population": 4040587,
+      "Violent crime total": 28630,
+      "Murder and nonnegligent Manslaughter": 467,
+      "Legacy rape": 1319,
+      "Robbery": 5805,
+      "Aggravated assault": 21039
+    },
+    {
+      "Year": 1991,
+      "Population": 4089000,
+      "Violent crime total": 34518,
+      "Murder and nonnegligent Manslaughter": 469,
+      "Legacy rape": 1455,
+      "Robbery": 6246,
+      "Aggravated assault": 26348
+    },
+    {
+      "Year": 1992,
+      "Population": 4136000,
+      "Violent crime total": 36052,
+      "Murder and nonnegligent Manslaughter": 455,
+      "Legacy rape": 1704,
+      "Robbery": 6819,
+      "Aggravated assault": 27074
+    },
+    {
+      "Year": 1993,
+      "Population": 4187000,
+      "Violent crime total": 32676,
+      "Murder and nonnegligent Manslaughter": 484,
+      "Legacy rape": 1471,
+      "Robbery": 6677,
+      "Aggravated assault": 24044
+    },
+    {
+      "Year": 1994,
+      "Population": 4219000,
+      "Violent crime total": 28844,
+      "Murder and nonnegligent Manslaughter": 501,
+      "Legacy rape": 1487,
+      "Robbery": 7223,
+      "Aggravated assault": 19633
+    },
+    {
+      "Year": 1995,
+      "Population": 4253000,
+      "Violent crime total": 26894,
+      "Murder and nonnegligent Manslaughter": 475,
+      "Legacy rape": 1350,
+      "Robbery": 7900,
+      "Aggravated assault": 17169
+    },
+    {
+      "Year": 1996,
+      "Population": 4273000,
+      "Violent crime total": 24159,
+      "Murder and nonnegligent Manslaughter": 444,
+      "Legacy rape": 1397,
+      "Robbery": 7124,
+      "Aggravated assault": 15194
+    },
+    {
+      "Year": 1997,
+      "Population": 4319000,
+      "Violent crime total": 24379,
+      "Murder and nonnegligent Manslaughter": 426,
+      "Legacy rape": 1396,
+      "Robbery": 6931,
+      "Aggravated assault": 15626
+    },
+    {
+      "Year": 1998,
+      "Population": 4352000,
+      "Violent crime total": 22286,
+      "Murder and nonnegligent Manslaughter": 354,
+      "Legacy rape": 1443,
+      "Robbery": 5698,
+      "Aggravated assault": 14791
+    },
+    {
+      "Year": 1999,
+      "Population": 4369862,
+      "Violent crime total": 21421,
+      "Murder and nonnegligent Manslaughter": 345,
+      "Legacy rape": 1513,
+      "Robbery": 5297,
+      "Aggravated assault": 14266
+    },
+    {
+      "Year": 2000,
+      "Population": 4447100,
+      "Violent crime total": 21620,
+      "Murder and nonnegligent Manslaughter": 329,
+      "Legacy rape": 1482,
+      "Robbery": 5702,
+      "Aggravated assault": 14107
+    },
+    {
+      "Year": 2001,
+      "Population": 4468912,
+      "Violent crime total": 19582,
+      "Murder and nonnegligent Manslaughter": 379,
+      "Legacy rape": 1369,
+      "Robbery": 5584,
+      "Aggravated assault": 12250
+    },
+    {
+      "Year": 2002,
+      "Population": 4478896,
+      "Violent crime total": 19931,
+      "Murder and nonnegligent Manslaughter": 303,
+      "Legacy rape": 1664,
+      "Robbery": 5962,
+      "Aggravated assault": 12002
+    },
+    {
+      "Year": 2003,
+      "Population": 4503726,
+      "Violent crime total": 19331,
+      "Murder and nonnegligent Manslaughter": 299,
+      "Legacy rape": 1656,
+      "Robbery": 6038,
+      "Aggravated assault": 11338
+    },
+    {
+      "Year": 2004,
+      "Population": 4525375,
+      "Violent crime total": 19324,
+      "Murder and nonnegligent Manslaughter": 254,
+      "Legacy rape": 1742,
+      "Robbery": 6042,
+      "Aggravated assault": 11286
+    },
+    {
+      "Year": 2005,
+      "Population": 4548327,
+      "Violent crime total": 19678,
+      "Murder and nonnegligent Manslaughter": 374,
+      "Legacy rape": 1564,
+      "Robbery": 6447,
+      "Aggravated assault": 11293
+    },
+    {
+      "Year": 2006,
+      "Population": 4599030,
+      "Violent crime total": 19553,
+      "Murder and nonnegligent Manslaughter": 382,
+      "Legacy rape": 1646,
+      "Robbery": 7062,
+      "Aggravated assault": 10463
+    },
+    {
+      "Year": 2007,
+      "Population": 4627851,
+      "Violent crime total": 20775,
+      "Murder and nonnegligent Manslaughter": 412,
+      "Legacy rape": 1548,
+      "Robbery": 7398,
+      "Aggravated assault": 11417
+    },
+    {
+      "Year": 2008,
+      "Population": 4661900,
+      "Violent crime total": 21110,
+      "Murder and nonnegligent Manslaughter": 351,
+      "Legacy rape": 1618,
+      "Robbery": 7346,
+      "Aggravated assault": 11795
+    },
+    {
+      "Year": 2009,
+      "Population": 4708708,
+      "Violent crime total": 21194,
+      "Murder and nonnegligent Manslaughter": 322,
+      "Legacy rape": 1504,
+      "Robbery": 6265,
+      "Aggravated assault": 13103
+    },
+    {
+      "Year": 2010,
+      "Population": 4785401,
+      "Violent crime total": 18363,
+      "Murder and nonnegligent Manslaughter": 275,
+      "Legacy rape": 1355,
+      "Robbery": 4864,
+      "Aggravated assault": 11869
+    },
+    {
+      "Year": 2011,
+      "Population": 4803689,
+      "Violent crime total": 20166,
+      "Murder and nonnegligent Manslaughter": 299,
+      "Legacy rape": 1370,
+      "Robbery": 4906,
+      "Aggravated assault": 13591
+    },
+    {
+      "Year": 2012,
+      "Population": 4817528,
+      "Violent crime total": 21693,
+      "Murder and nonnegligent Manslaughter": 342,
+      "Legacy rape": 1296,
+      "Robbery": 5020,
+      "Aggravated assault": 15035
+    },
+    {
+      "Year": 2013,
+      "Population": 4833996,
+      "Violent crime total": 20834,
+      "Murder and nonnegligent Manslaughter": 346,
+      "Legacy rape": 1449,
+      "Robbery": 4645,
+      "Aggravated assault": 13788
+    },
+    {
+      "Year": 2014,
+      "Population": 4849377,
+      "Violent crime total": 20727,
+      "Murder and nonnegligent Manslaughter": 276,
+      "Legacy rape": 1436,
+      "Robbery": 4701,
+      "Aggravated assault": 13745
+    }
+  ]
+}
