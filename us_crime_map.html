@@ -2,17 +2,22 @@
 <! duspviz tutorial >
 <html lang="en">
 <head>
-	<title>Mapping with D3</title>
+	<title>Relative Violent Crime Map</title>
 	<script src="js/d3.v4.min.js" charset="utf-8"></script>
 	<script src="js/topojson.v2.min.js" charset="utf-8"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
 
 	<style>
-	.states { 		  fill: rgba(0,0,0,.11);
- }
+		.states { fill: #c0392b; }
 		 .states :hover {
 		  fill: red;
 		}
-
+		.state { transition: all 1.3s; }
+		svg g {
+			opacity: 0;
+			transition: all .8s;
+		}
 
 		.state-borders {
 		  fill: none;
@@ -22,61 +27,99 @@
 		  stroke-linecap: round;
 		  pointer-events: none;
 		}
+		svg {
+			margin: auto;
+    		display: block;
+		}
+		.map-header { text-align: center; }
+		.mh-content {
+			display: inline-block;
+			font-family: 'Poiret One', cursive;
+		}
+		.mh-title {
+		    opacity: 0;
+			width: 250px;
+			font-size: 78px;
+			line-height: 68px;
+			transition: all .5s;
+		}
+		.mh-subtitle {
+    		opacity: 0.7;
+    		font-size: 13px;
+			text-align: right;
+    		letter-spacing: 0.5px;
+		}
+		.map-caption {
+    		opacity: 0.3;
+		    font-size: 10px;
+		    width: 580px;
+    		margin: auto;
+    		margin-top: 14px;
+    		text-align: right;
+			font-family: 'Poiret One', cursive;
+		}
+		.years-box {
+			text-align: center;
+			font-family: 'Poiret One', cursive;
+		}
+		.year-box {
+		    opacity: 0.4;
+		    cursor: pointer;
+		    font-size: 11px;
+		    padding: 10px 6px;
+		    letter-spacing: 4px;
+			display: inline-block;
+			transition: all .3s;
+		}
+		.year-box:hover { opacity: 0.7; }
+
 	</style>
 
 </head>
 <body>
-<svg width="960" height="600"></svg>
+<div class="map-header">
+	<div class="mh-content">
+		<div class="mh-title">1980</div>
+		<div class="mh-subtitle">relative violent crime map</div>
+	</div>
+</div>
+<svg></svg>
+<div class="years-box">
+	<div class="year-box" onclick="mapUpdate(1980);">1980</div>
+	<div class="year-box" onclick="mapUpdate(1985);">1985</div>
+	<div class="year-box" onclick="mapUpdate(1990);">1990</div>
+	<div class="year-box" onclick="mapUpdate(1995);">1995</div>
+	<div class="year-box" onclick="mapUpdate(2000);">2000</div>
+	<div class="year-box" onclick="mapUpdate(2005);">2005</div>
+	<div class="year-box" onclick="mapUpdate(2010);">2010</div>
+	<div class="year-box" onclick="mapUpdate(2014);">2014</div>
+	<div class="year-box" onclick="watchMapUpdate();">watch</div>
+</div>
+<div class="map-caption">*lighter being lower crime rate, compared to the highest, based on per capita </div>
 
-	 
 
 <script>  
+
 var statesIdMap = {
 	"al":"01","ak":"02","ar":"03","az":"04","la":"05","ca":"06","ar":"07","ut":"08","ct":"09","de":"10","de":"11","fl":"12","ga":"13","il":"14","hi":"15","id":"16","il":"17","in":"18","ia":"19","ks":"20","ky":"21","la":"22","me":"23","md":"24","ma":"25","mi":"26","wi":"27","ms":"28","mo":"29","mt":"30","ne":"31","nv":"32","nh":"33","nj":"34","nm":"35","ny":"36","nc":"37","nd":"38","oh":"39","ok":"40","or":"41","pa":"42","tx":"43","ri":"44","sc":"45","sd":"46","tn":"47","tx":"48","ut":"49","vt":"50","va":"51","wa":"53","wv":"54"};
 
+var keysState = Object.keys(statesIdMap);
+var valuesState = Object.values(statesIdMap);
 
-
-
-var svg = d3.select("svg");
-var path = d3.geoPath();
-
-d3.json("data/us-10m.v1.json", function(error, us) {
-  if (error) throw error;
-
-  svg.append("g")
-  	.attr("class", "states")
-    .selectAll("path")
-    .data(topojson.feature(us, us.objects.states).features)
-    .enter()
-    .append("path")
-    .attr("class", function(d) {
-    	var name = d.id;
-    	return "state-" + name; 
-    })
-    .each(function(d) {
-                   console.log(d)
-                })
-    .attr("d", path);
-    console.log(us.objects.states.geometries);
-
-  svg.append("path")
-      .attr("class", "state-borders")
-      .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
-});
-
-
-
-	var crimePerCapita 		= 0;
-	var statesCrime 		= [];
-	var statesCrimeHigh 	= [];
-	var crimeMax 	 		= [];
-	var stateRelativeCrime	= [];
-
+var crimePerCapita 		= 0;
+var crimeMax 	 		= [];
+var statesCrime 		= [];
+var statesCrimeHigh 	= [];
+var stateRelativeCrime	= [];
+var idStatesMap = [];
+for(x=0;x<keysState.length;x++){
+	idStatesMap[valuesState[x]] = keysState[x];
+}
 
 d3.json("data/stateCrime/usCrime.json", function(error, states) {
 	if (error) throw error;
-	for( y = 1980; y <= 2014; y++){	// INITIATE VARS FOR EACH YEAR
-		statesCrimeHigh[y] = [];	  									// set vars here because of scope
+	for( y = 1980; y <= 2014; y++){									// INITIATE VARS FOR EACH YEAR
+		statesCrimeHigh[y] = [];	  								// set vars here because of scope
 		stateRelativeCrime[y] = [];									// used to get opacity
 	}
 
@@ -89,10 +132,9 @@ d3.json("data/stateCrime/usCrime.json", function(error, states) {
   			crimePerCapita = states[i].data[x]["Violent crime total"] / states[i].data[x]["Population"];	// get per capita crime rate
   			crimePerCapita = crimePerCapita.toFixed(5);  				// limit the data length
 	  		statesCrime[i][j] = crimePerCapita;							// add average and year to state array
-		  	statesCrimeHigh[j][stateName] = crimePerCapita;			// add state and average to year array	
+		  	statesCrimeHigh[j][stateName] = crimePerCapita;				// add state and average to year array	
 	 	}
 	}
-
 
 	for( y = 1980; y <= 2014; y++ ){	// ANNUAL NATIONAL HIGH CRIME PER CAPITA
 		var annualCrimeArray = Object.values(statesCrimeHigh[y]);		// get the percentages of each state
@@ -108,13 +150,116 @@ d3.json("data/stateCrime/usCrime.json", function(error, states) {
 		currentValues 	= Object.values(statesCrimeHigh[y]);
 
 		for( i = 0; i < states.length; i++ ) { 	// stateRelativeCrime 
-			stateRelativeCrime[y][currentKeys[i]] = parseFloat(currentValues[i])/crimeMax[y];
+			stateRelativeCrime[y][currentKeys[i]] = (parseFloat(currentValues[i])/crimeMax[y]).toFixed(5);
 		}
  	}
-
 });
 
 
+var width 	= 580;
+var height 	= 340;
+var svg 	= d3.select("svg")
+	.attr("width", width)
+    .attr("height", height);
+
+function scale (scaleFactor,width,height) {
+  return d3.geoTransform({
+    point: function(x, y) {
+      this.stream.point( (x - width/2) * scaleFactor + width/3 , (y - height/2) * scaleFactor + height/3);
+    }
+  });
+}
+  
+		
+		d3.json("data/idStateMap.json", function(error, idState) {				// GENERATING THE MAP
+			if (error) throw error;
+			d3.json("data/us-10m.v1.json", function(error, us) { 				// loading json file
+				if (error) throw error;
+				d3.json("data/stateCrimeRateRelative.json", function(error, relativeCrime) {		// loading anoter json file
+				  	if (error) throw error;
+
+		  			var path = d3.geoPath().projection(scale(0.5,width,height)); // scale the svg 
+					svg.append("g")
+					  	.attr("class", "states")
+					    .selectAll("path")
+					    .data(topojson.feature(us, us.objects.states).features)
+					    .enter()
+					    .append("path")
+					    .attr("class", function(d) {					// CLASS, unique
+					    	var name = d.id;
+					    	return "state state-" + name; 
+					    })
+					    .style("opacity", function(d) {					// OPACITY
+					    	var stateId = "" + d.id;
+					    	if(idState.data[0][stateId]){ 				
+					    		var state = idState.data[0][stateId]; 	// pull state acronym from idStateMap.json
+								opacityUpdate = "" + relativeCrime[1980][0].data[0][state]; 
+								return opacityUpdate;					// above ln, pull data from stateCrimeRateRelative.json
+							}
+						})
+					    .attr("d", path);
+				  // svg.append("path")								// generate state border
+				  //     .attr("class", "state-borders")
+				  //     .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+				});
+
+			});
+		});
+		$(".mh-title").css("opacity","0");
+		setTimeout(function(){
+			$(".mh-title").text("1980");
+			$('svg g, .mh-title').css("opacity", "1");
+		},400);
+
+
+function mapUpdate(year){
+	var i = 0;
+	var isLockedYear = false;
+	var years = [1980, 1985, 1990, 2000, 2005, 2010, 2014];
+
+	d3.json("data/idStateMap2.json", function(error, stateId) {
+		if (error) throw error;		// console.log(stateId.data);
+		d3.json("data/stateCrimeRateRelative.json", function(error, relativeCrime) {
+			if (error) throw error;
+			stateId.data.forEach(function(state){
+				var stateId 		= Object.keys(state)[0];
+				var stateAbbrev 	= Object.values(state)[0];
+				var stateOpacity 	= relativeCrime[year][0].data[0][stateAbbrev];
+
+				$(".state-" + stateId).css("opacity", stateOpacity);// find state and replace opacity styling
+			});
+		});
+	});
+
+	$(".mh-title").css("opacity","0");
+	
+	setTimeout(function(){
+		$(".mh-title").text(year);
+		$('.mh-title').css("opacity", "1");
+	},500);
+
+}
+
+
+function watchMapUpdate(){
+
+	var years = [1980, 1985, 1990, 2000, 2005, 2010, 2014];
+	var isLockedYear = false;
+	var i = 0;
+
+	var activateMapUpdate = setInterval(function(){
+
+		console.log(years[i]);
+		mapUpdate(years[i]);
+		if( i >= 6){
+			clearInterval(activateMapUpdate);				
+		}
+		i++;
+	}, 1800);
+
+}
+
+ 
 
 </script>
 
