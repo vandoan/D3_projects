@@ -116,44 +116,44 @@ for(x=0;x<keysState.length;x++){
 	idStatesMap[valuesState[x]] = keysState[x];
 }
 
-d3.json("data/stateCrime/usCrime.json", function(error, states) {
-	if (error) throw error;
-	for( y = 1980; y <= 2014; y++){									// INITIATE VARS FOR EACH YEAR
-		statesCrimeHigh[y] = [];	  								// set vars here because of scope
-		stateRelativeCrime[y] = [];									// used to get opacity
-	}
+// d3.json("data/stateCrime/usCrime.json", function(error, states) {
+// 	if (error) throw error;
+// 	for( y = 1980; y <= 2014; y++){									// INITIATE VARS FOR EACH YEAR
+// 		statesCrimeHigh[y] = [];	  								// set vars here because of scope
+// 		stateRelativeCrime[y] = [];									// used to get opacity
+// 	}
 
-	for( i = 0; i < states.length; i++ ) { // CRIME PER CAPITA BY STATE
-		var stateName = states[i].state;
-	 	statesCrime[i] = {};											// create an object in the array
-		statesCrime[i]['state'] = stateName; 							// add its state name
+// 	for( i = 0; i < states.length; i++ ) { // CRIME PER CAPITA BY STATE
+// 		var stateName = states[i].state;
+// 	 	statesCrime[i] = {};											// create an object in the array
+// 		statesCrime[i]['state'] = stateName; 							// add its state name
 
-	 	for( x = 0, j = 1980; j <= 2014; x++, j++){						// go through time span
-  			crimePerCapita = states[i].data[x]["Violent crime total"] / states[i].data[x]["Population"];	// get per capita crime rate
-  			crimePerCapita = crimePerCapita.toFixed(5);  				// limit the data length
-	  		statesCrime[i][j] = crimePerCapita;							// add average and year to state array
-		  	statesCrimeHigh[j][stateName] = crimePerCapita;				// add state and average to year array	
-	 	}
-	}
+// 	 	for( x = 0, j = 1980; j <= 2014; x++, j++){						// go through time span
+//   			crimePerCapita = states[i].data[x]["Violent crime total"] / states[i].data[x]["Population"];	// get per capita crime rate
+//   			crimePerCapita = crimePerCapita.toFixed(5);  				// limit the data length
+// 	  		statesCrime[i][j] = crimePerCapita;							// add average and year to state array
+// 		  	statesCrimeHigh[j][stateName] = crimePerCapita;				// add state and average to year array	
+// 	 	}
+// 	}
 
-	for( y = 1980; y <= 2014; y++ ){	// ANNUAL NATIONAL HIGH CRIME PER CAPITA
-		var annualCrimeArray = Object.values(statesCrimeHigh[y]);		// get the percentages of each state
-		var yearMaxCrimeUpdate = [];									// initiate the var
-		for(x = 0; x < annualCrimeArray.length; x++ ){					// go through the numbers of the year
-			yearMaxCrimeUpdate.push(parseFloat(annualCrimeArray[x]));	// and turn them into floats
- 		}
-		crimeMax[y] = Math.max.apply(null,yearMaxCrimeUpdate);	// with the floats, get the max
-	}
+// 	for( y = 1980; y <= 2014; y++ ){	// ANNUAL NATIONAL HIGH CRIME PER CAPITA
+// 		var annualCrimeArray = Object.values(statesCrimeHigh[y]);		// get the percentages of each state
+// 		var yearMaxCrimeUpdate = [];									// initiate the var
+// 		for(x = 0; x < annualCrimeArray.length; x++ ){					// go through the numbers of the year
+// 			yearMaxCrimeUpdate.push(parseFloat(annualCrimeArray[x]));	// and turn them into floats
+//  		}
+// 		crimeMax[y] = Math.max.apply(null,yearMaxCrimeUpdate);	// with the floats, get the max
+// 	}
  	
-	for( y = 1980; y <= 2014; y++){	//  RELATIVE CRIME RATE BY STATE
-		currentKeys 	= Object.keys(statesCrimeHigh[y]);
-		currentValues 	= Object.values(statesCrimeHigh[y]);
+// 	for( y = 1980; y <= 2014; y++){	//  RELATIVE CRIME RATE BY STATE
+// 		currentKeys 	= Object.keys(statesCrimeHigh[y]);
+// 		currentValues 	= Object.values(statesCrimeHigh[y]);
 
-		for( i = 0; i < states.length; i++ ) { 	// stateRelativeCrime 
-			stateRelativeCrime[y][currentKeys[i]] = (parseFloat(currentValues[i])/crimeMax[y]).toFixed(5);
-		}
- 	}
-});
+// 		for( i = 0; i < states.length; i++ ) { 	// stateRelativeCrime 
+// 			stateRelativeCrime[y][currentKeys[i]] = (parseFloat(currentValues[i])/crimeMax[y]).toFixed(5);
+// 		}
+//  	}
+// });
 
 
 var width 	= 580;

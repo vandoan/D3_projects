@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<! duspviz tutorial >
+<html lang="en">
+<head>
+	<title>U.S. Diversity Map</title>
+	<script src="js/d3.v4.min.js" charset="utf-8"></script>
+	<script src="js/topojson.v2.min.js" charset="utf-8"></script>
+	<script src="js/3.2.1.jquery.min.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
+
+	<style>
+		.states { fill: #12a085; }
+		 .states :hover {
+		  fill: #c0392b;
+		}
+		.state { 
+			cursor: pointer;
+			transition: all 1.3s;
+		}
+		svg g {
+			opacity: 0;
+			transition: all .8s;
+		}
+
+		.state-borders {
+		  fill: none;
+		  stroke: #fff;
+		  stroke-width: 0.5px;
+		  stroke-linejoin: round;
+		  stroke-linecap: round;
+		  pointer-events: none;
+		}
+		svg {
+			margin: auto;
+    		display: block;
+		}
+		.map-header { text-align: center; }
+		.mh-content {
+			display: inline-block;
+			font-family: 'Poiret One', cursive;
+		}
+		.mh-title {
+		    opacity: 0;
+			width: 250px;
+			font-size: 78px;
+			line-height: 68px;
+			transition: all .5s;
+		}
+		.mh-subtitle {
+    		opacity: 0.7;
+    		font-size: 13px;
+			text-align: right;
+    		letter-spacing: 0.5px;
+		}
+		.map-caption {
+    		opacity: 0.3;
+		    font-size: 10px;
+		    width: 580px;
+    		margin: auto;
+    		margin-top: 40px;
+    		text-align: right;
+			font-family: 'Poiret One', cursive;
+		}
+
+		.legend-items {
+			width: 580px;
+    		margin: auto;
+    		margin-top: 16px;
+    		text-align: right;
+		}
+		.lgd {
+			width: 50px;
+			height: 3px;
+			float: right;
+			display: inline-block;
+			background-color: #12a085;
+		}
+		.lgd-text {
+    		font-size: 10px;
+			margin-top: 10px;
+    		margin-right: 16px;
+		}
+		
+		.lg5 { width: 34px; }
+		.lg4 { opacity: 0.8; width: 30px; }
+		.lg3 { opacity: 0.5; width: 42px; }
+		.lg2 { opacity: 0.3; width: 24px; }
+		.lg1 { opacity: 0.1; width: 30px; }
+		.lg5 .lgd-text { opacity: 0.3; }
+		.lg1 .lgd-text { margin-right: 4px; }
+		.lg5 .lgd-text { margin-right: 26px; }
+
+		.state-diversity {
+	    	opacity: .9;
+   	 		font-size: 58px;
+   	 		margin-top: -40px;
+   	 		margin-left: 90px;
+		    display: inline-block;
+
+		}
+		.sd-number {
+			opacity: 0;
+			letter-spacing: 1px;
+			transition: all .3s;
+		}
+		.perc-sign {
+			font-size: 30px;
+		    margin-left: -2px;
+		}
+ 
+	</style>
+
+</head>
+<body>
+<div class="map-header">
+	<div class="mh-content">
+		<div class="mh-title">U.S.</div>
+		<div class="mh-subtitle">diversity in population</div>
+	</div>
+</div>
+<svg></svg>
+
+<div class="legend-box">
+	<div class="legend-items">
+		<div class="lgd lg1"><div class="lgd-text">50</div></div>
+		<div class="lgd lg2"></div>
+		<div class="lgd lg3"></div>
+		<div class="lgd lg4"></div>
+		<div class="lgd lg5"><div class="lgd-text">1</div></div>		
+	</div>
+</div>
+
+<div class="map-caption">*the percentage of the population that is caucasian</div>
+<div class="state-diversity"><div class="sd-number">93%</div></div>
+
+
+<script>  
+
+
+var width 	= 580;
+var height 	= 340;
+var svg 	= d3.select("svg")
+	.attr("width", width)
+    .attr("height", height);
+
+function scale (scaleFactor,width,height) {
+  return d3.geoTransform({
+    point: function(x, y) {
+      this.stream.point( (x - width/2) * scaleFactor + width/3 , (y - height/2) * scaleFactor + height/3);
+    }
+  });
+}
+  
+		
+d3.json("data/idStateMap.json", function(error, idState) {				// GENERATING THE MAP
+	if (error) throw error;
+	d3.json("data/us-10m.v1.json", function(error, us) { 				// loading json file
+		if (error) throw error;
+		d3.json("data/giniInequality.json", function(error, giniRank) {		// loading anoter json file
+		  	if (error) throw error;
+
+  			var path = d3.geoPath().projection(scale(0.5,width,height)); // scale the svg 
+			svg.append("g")
+			  	.attr("class", "states")
+			    .selectAll("path")
+			    .data(topojson.feature(us, us.objects.states).features)
+			    .enter()
+			    .append("path")
+			    .attr("class", function(d) {					// CLASS, unique
+			    	var name = d.id;
+			    	return "state state-" + name; 
+			    })
+			    .attr("diversity", function(d) {	
+			    	var stateId = "" + d.id;
+			    	if(idState.data[0][stateId]){ 	
+			    		var state = idState.data[0][stateId]; 	// pull state acronym from idStateMap.json
+			    		return giniRank[state];
+			    	}
+			    })
+			    .style("opacity", function(d) {					// OPACITY
+			    	var stateId = "" + d.id;
+			    	if(idState.data[0][stateId]){ 	
+			    		var state = idState.data[0][stateId]; 	// pull state acronym from idStateMap.json
+						opacityUpdate = 1 - ((50 - giniRank[state]) / 50); // get the inverse
+						if(opacityUpdate == 0) {
+							opacityUpdate = .04;
+						}
+						console.log(opacityUpdate);
+						return opacityUpdate;					// above ln, pull data from stateCrimeRateRelative.json
+					}
+				})
+			    .attr("d", path);
+		  // svg.append("path")								// generate state border
+		  //     .attr("class", "state-borders")
+		  //     .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+		});
+
+	});
+});
+$(document).ready(function(){
+	$(".mh-title").css("opacity","0");
+	setTimeout(function(){
+		$('svg g, .mh-title').css("opacity", "1");
+	},400);
+});
+
+$(document).ready(function(){
+	setTimeout(function(){
+		$(".state").click(function(){			
+			$(".sd-number").text("").css("opacity", "0");
+			var decimal = $(this).attr("diversity");
+			var percent = parseFloat(decimal) * 100;
+
+			function updateNumber(){
+				$(".sd-number").text(Math.ceil(percent));
+				$("<span class='perc-sign'>%</span>").appendTo($(".sd-number"));
+				$(".sd-number").css("opacity","0.8");
+			}
+			
+			setTimeout(updateNumber, 300, percent);
+		});
+	}, 1000);
+});
+
+
+</script>
+
+
+</body>
+</html>
