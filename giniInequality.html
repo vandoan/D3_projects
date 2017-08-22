@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<! duspviz tutorial >
+<!-- data from https://en.wikipedia.org/wiki/List_of_U.S._states_by_Gini_coefficient -->
 <html lang="en">
 <head>
 	<title>U.S. Diversity Map</title>
@@ -57,7 +57,7 @@
 		    font-size: 10px;
 		    width: 580px;
     		margin: auto;
-    		margin-top: 40px;
+    		margin-top: 60px;
     		text-align: right;
 			font-family: 'Poiret One', cursive;
 		}
@@ -67,6 +67,8 @@
     		margin: auto;
     		margin-top: 16px;
     		text-align: right;
+    		letter-spacing: 0.5px;
+    		font-family: 'Poiret One', cursive;
 		}
 		.lgd {
 			width: 50px;
@@ -78,7 +80,6 @@
 		.lgd-text {
     		font-size: 10px;
 			margin-top: 10px;
-    		margin-right: 16px;
 		}
 		
 		.lg5 { width: 34px; }
@@ -86,9 +87,9 @@
 		.lg3 { opacity: 0.5; width: 42px; }
 		.lg2 { opacity: 0.3; width: 24px; }
 		.lg1 { opacity: 0.1; width: 30px; }
-		.lg5 .lgd-text { opacity: 0.3; }
+		.lg3 .lgd-text { margin-left: -3px; }
 		.lg1 .lgd-text { margin-right: 4px; }
-		.lg5 .lgd-text { margin-right: 26px; }
+		.lg5 .lgd-text { opacity: 0.3; margin-right: 7px; }
 
 		.state-diversity {
 	    	opacity: .9;
@@ -104,8 +105,8 @@
 			transition: all .3s;
 		}
 		.perc-sign {
-			font-size: 30px;
-		    margin-left: -2px;
+			font-size: 28px;
+		    margin-right: 4px;
 		}
  
 	</style>
@@ -115,22 +116,22 @@
 <div class="map-header">
 	<div class="mh-content">
 		<div class="mh-title">U.S.</div>
-		<div class="mh-subtitle">diversity in population</div>
+		<div class="mh-subtitle">Inequality and state ranking</div>
 	</div>
 </div>
 <svg></svg>
 
 <div class="legend-box">
 	<div class="legend-items">
-		<div class="lgd lg1"><div class="lgd-text">50</div></div>
+		<div class="lgd lg1"><div class="lgd-text">less</div></div>
 		<div class="lgd lg2"></div>
-		<div class="lgd lg3"></div>
+		<div class="lgd lg3"><div class="lgd-text">inequality</div></div>
 		<div class="lgd lg4"></div>
-		<div class="lgd lg5"><div class="lgd-text">1</div></div>		
+		<div class="lgd lg5"><div class="lgd-text">more</div></div>		
 	</div>
 </div>
 
-<div class="map-caption">*the percentage of the population that is caucasian</div>
+<div class="map-caption">*list of inequality by Gini coefficient</div>
 <div class="state-diversity"><div class="sd-number">93%</div></div>
 
 
@@ -185,7 +186,6 @@ d3.json("data/idStateMap.json", function(error, idState) {				// GENERATING THE 
 						if(opacityUpdate == 0) {
 							opacityUpdate = .04;
 						}
-						console.log(opacityUpdate);
 						return opacityUpdate;					// above ln, pull data from stateCrimeRateRelative.json
 					}
 				})
@@ -209,11 +209,11 @@ $(document).ready(function(){
 		$(".state").click(function(){			
 			$(".sd-number").text("").css("opacity", "0");
 			var decimal = $(this).attr("diversity");
-			var percent = parseFloat(decimal) * 100;
+			var percent = parseFloat(decimal);
 
 			function updateNumber(){
 				$(".sd-number").text(Math.ceil(percent));
-				$("<span class='perc-sign'>%</span>").appendTo($(".sd-number"));
+				$("<span class='perc-sign'>#</span>").prependTo($(".sd-number"));
 				$(".sd-number").css("opacity","0.8");
 			}
 			
